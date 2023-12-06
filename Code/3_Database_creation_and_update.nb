@@ -1,0 +1,985 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     40086,        977]
+NotebookOptionsPosition[     36900,        915]
+NotebookOutlinePosition[     37304,        931]
+CellTagsIndexPosition[     37261,        928]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[TextData[StyleBox["Data Source Information", "Subsubsection",
+ FontSize->12,
+ FontColor->GrayLevel[0]]], "Text",
+ CellGroupingRules->{"GroupTogetherGrouping", 10001.},
+ InitializationGroup->True,
+ CellChangeTimes->{
+  3.889113212268409*^9, 3.88911338246751*^9, {3.8891135469153085`*^9, 
+   3.889113550742528*^9}, {3.8891137053632884`*^9, 3.8891137154702272`*^9}, {
+   3.889113963378729*^9, 3.889113986576949*^9}, {3.8891148967661576`*^9, 
+   3.889114912996775*^9}, {3.8891149431315527`*^9, 3.8891149894036665`*^9}, {
+   3.889115076782377*^9, 3.8891150958407707`*^9}, {3.889116545361045*^9, 
+   3.8891165473761177`*^9}},ExpressionUUID->"eb253dce-1f4d-4993-a980-\
+f511f22bc772"],
+
+Cell[TextData[StyleBox[Cell[BoxData[GridBox[{
+   {"Parameter", "value", "comments"},
+   {
+    RowBox[{"Data", " ", "source"}], 
+    RowBox[{"GDELT", " ", "1.0", " ", "Event", " ", "Database"}], 
+    "\[Placeholder]"},
+   {
+    RowBox[{"Data", " ", "Type"}], 
+    RowBox[{"CSV", " ", 
+     RowBox[{"(", 
+      RowBox[{"comma", " ", "separated", " ", "values"}], ")"}]}], 
+    "\[Placeholder]"},
+   {
+    RowBox[{"Data", " ", "Format"}], 
+    RowBox[{"YYYYMMDD", ".", "export", ".", "CSV", ".", "zip"}], 
+    "\[Placeholder]"},
+   {
+    RowBox[{"Zip", " ", "format", " ", "size"}], 
+    RowBox[{"3", "-", 
+     RowBox[{"10", " ", "MB", " "}]}], "\[Placeholder]"},
+   {
+    RowBox[{"CSV", " ", "format", " ", "size"}], 
+    RowBox[{"25", "-", 
+     RowBox[{"50", " ", "MB"}]}], "\[Placeholder]"},
+   {"\[Placeholder]", "\[Placeholder]", "\[Placeholder]"}
+  },
+  GridBoxDividers->{"Columns" -> {{True}}, "Rows" -> {{True}}}]], "Text",
+ FontSize->12,
+ FontColor->GrayLevel[
+  0],ExpressionUUID->"47014123-b744-4f3d-a85b-021a1b090e41"], \
+"Subsubsection"]], "Text",
+ CellGroupingRules->{"GroupTogetherGrouping", 10001.},
+ CellChangeTimes->{{3.889115088357806*^9, 
+  3.8891150958407707`*^9}},ExpressionUUID->"c5902bb8-7236-45e2-b28b-\
+e8693ce83574"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Initialization ", "Text",
+ CellGroupingRules->{"GroupTogetherGrouping", 10000.},
+ CellChangeTimes->{{3.8891131067989364`*^9, 3.889113117784097*^9}, 
+   3.8891148535252075`*^9},ExpressionUUID->"487008c5-74e1-4791-a6dd-\
+9694388bcb43"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"mainfolder", " ", "=", " ", "\"\<GDELT_Event_data\>\""}], ";"}], 
+  RowBox[{"(*", 
+   RowBox[{
+   "Give", " ", "the", " ", "name", " ", "of", " ", "data", " ", "folder", 
+    " ", "of", " ", "your", " ", "choice"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"countrypair", " ", "=", " ", "\"\<Russia-||-Ukraine\>\""}], ";"}], 
+  RowBox[{"(*", 
+   RowBox[{"country", " ", "pair", " ", "of", " ", "conflict"}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"from", " ", "=", 
+    RowBox[{"{", 
+     RowBox[{"2023", ",", "03", ",", "18"}], "}"}]}], ";"}], 
+  RowBox[{"(*", 
+   RowBox[{"from", " ", "date", " ", 
+    RowBox[{"(", 
+     RowBox[{
+     "only", " ", "1", " ", "day", " ", "recommended", " ", "for", " ", 
+      "testing", " ", "purpose"}], ")"}]}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"to", " ", "=", 
+   RowBox[{"{", 
+    RowBox[{"2023", ",", "03", ",", "18"}], "}"}]}], ";", 
+  RowBox[{"(*", 
+   RowBox[{"end", " ", "date"}], "*)"}], "\[IndentingNewLine]"}]}], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10000.},
+ CellChangeTimes->{
+  3.8891148535252075`*^9, {3.8891169814201097`*^9, 3.8891170311739464`*^9}, {
+   3.8891172561408653`*^9, 3.889117277120632*^9}, {3.889120905220892*^9, 
+   3.889120905689479*^9}, {3.889121030494315*^9, 3.889121031994001*^9}, {
+   3.889121062176625*^9, 3.889121062551535*^9}, {3.889185687639419*^9, 
+   3.8891856918884077`*^9}, {3.889186691572503*^9, 3.889186692747491*^9}, {
+   3.8891919042623873`*^9, 3.8891919058401065`*^9}, {3.88919381123621*^9, 
+   3.8891938203438487`*^9}, {3.889193947021871*^9, 3.8891939557072735`*^9}, {
+   3.8892021096495857`*^9, 3.889202110540001*^9}, {3.889203542048051*^9, 
+   3.8892035485465136`*^9}, {3.8892035858675966`*^9, 3.88920365907277*^9}, {
+   3.889203798090333*^9, 3.8892037993087935`*^9}, {3.889204121870017*^9, 
+   3.889204124635018*^9}, {3.8892043497448273`*^9, 3.8892043507758226`*^9}, {
+   3.889204496620195*^9, 3.8892044974950204`*^9}, {3.8892069955778036`*^9, 
+   3.889207022058587*^9}, {3.889209341587796*^9, 3.8892093466491733`*^9}, {
+   3.889287848484409*^9, 
+   3.889287922813652*^9}},ExpressionUUID->"dc69e110-229b-4c2f-81e0-\
+6765ea7d2017"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Folder creation", "Text",
+ CellGroupingRules->{"GroupTogetherGrouping", 10001.},
+ CellChangeTimes->{{3.889109766556099*^9, 3.88910978858574*^9}, {
+  3.889114863335975*^9, 3.8891148768951807`*^9}, {3.889116604709205*^9, 
+  3.88911661050471*^9}},ExpressionUUID->"739a3823-d310-4613-afce-\
+78e6e555b1a5"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"create", "[", "mainfolder_", "]"}], ":=", 
+    RowBox[{"CreateDirectory", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"zip", ",", "csv"}], "}"}], "=", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"FileNameJoin", "[", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"NotebookDirectory", "[", "]"}], ",", "mainfolder", ",", 
+           "#"}], "}"}], "]"}], "&"}], "/@", 
+       RowBox[{"{", 
+        RowBox[{"\"\<Data_zip\>\"", ",", "\"\<Data_csv\>\""}], "}"}]}]}], 
+     "]"}]}], ";", 
+   RowBox[{"(*", 
+    RowBox[{"function", " ", "to", " ", "create", " ", "folder"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"delete", "[", "mainfolder_", "]"}], ":=", 
+    RowBox[{"DeleteDirectory", "[", 
+     RowBox[{
+      RowBox[{"FileNameJoin", "[", 
+       RowBox[{
+        RowBox[{"NotebookDirectory", "[", "]"}], ",", "mainfolder"}], "]"}], 
+      ",", 
+      RowBox[{"DeleteContents", "->", "True"}]}], "]"}]}], ";", 
+   RowBox[{"(*", 
+    RowBox[{"function", " ", "to", " ", "delete", " ", "folder"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"create", "[", "mainfolder", "]"}], "//", "Quiet"}], ";"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"delete", "[", "mainfolder", "]"}], "//", "Quiet"}], ";"}], 
+   "*)"}], "\[IndentingNewLine]"}]], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10001.},
+ CellChangeTimes->{{3.88910979260033*^9, 3.8891097996931267`*^9}, 
+   3.8891131432031803`*^9, 3.889114863335975*^9, {3.88911661958134*^9, 
+   3.889116642576699*^9}, {3.889117732144719*^9, 3.8891177432669935`*^9}, {
+   3.889117806534442*^9, 3.889117808596376*^9}, {3.8891178637726107`*^9, 
+   3.889117866568826*^9}, {3.8891183331479034`*^9, 3.8891183631887674`*^9}, {
+   3.889118474591428*^9, 3.889118480012018*^9}, {3.8891185298556213`*^9, 
+   3.889118533245429*^9}, {3.8891186330079947`*^9, 3.8891186503331966`*^9}, {
+   3.8891190965164194`*^9, 3.8891190967194233`*^9}, {3.8891202169806614`*^9, 
+   3.889120231915263*^9}, 3.8892036696490417`*^9, {3.889287933374523*^9, 
+   3.8892879592915497`*^9}},ExpressionUUID->"74210a79-4027-41d8-8ee3-\
+12705f291911"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Files Download and Extract", "Text",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ CellChangeTimes->{{3.889116922073554*^9, 3.8891169268380666`*^9}, {
+   3.889120826946993*^9, 3.889120830165606*^9}, 
+   3.8891217761913877`*^9},ExpressionUUID->"bcc2954c-bfa6-4926-b0d9-\
+06ec4b546327"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"p", "=", 
+    RowBox[{"DateRange", "[", 
+     RowBox[{"from", ",", "to"}], "]"}]}], ";"}], 
+  RowBox[{"(*", 
+   RowBox[{"Date", " ", "range", " ", "created"}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"zero", " ", "=", 
+    RowBox[{"Rule", "@@@", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"\"\<1\>\"", ",", "\"\<01\>\""}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"\"\<2\>\"", ",", "\"\<02\>\""}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"\"\<3\>\"", ",", "\"\<03\>\""}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"\"\<4\>\"", ",", "\"\<04\>\""}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"\"\<5\>\"", ",", "\"\<05\>\""}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"\"\<6\>\"", ",", "\"\<06\>\""}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"\"\<7\>\"", ",", "\"\<07\>\""}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"\"\<8\>\"", ",", "\"\<08\>\""}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"\"\<9\>\"", ",", "\"\<09\>\""}], "}"}]}], "}"}]}]}], ";"}], 
+  RowBox[{"(*", 
+   RowBox[{
+   "rule", " ", "to", " ", "add", " ", "0", " ", "before", " ", "single", " ",
+     "digit", " ", "to", " ", "match", " ", "pattern", " ", "of", " ", 
+    "GDELT", " ", "database"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"datelist", "=", 
+   RowBox[{"StringJoin", "/@", 
+    RowBox[{"Transpose", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"ToString", "/@", 
+        RowBox[{"p", "[", 
+         RowBox[{"[", 
+          RowBox[{"All", ",", "1"}], "]"}], "]"}]}], ",", 
+       RowBox[{
+        RowBox[{"Replace", "[", "zero", "]"}], "/@", 
+        RowBox[{"ToString", "/@", 
+         RowBox[{"p", "[", 
+          RowBox[{"[", 
+           RowBox[{"All", ",", "2"}], "]"}], "]"}]}]}], ",", 
+       RowBox[{
+        RowBox[{"Replace", "[", "zero", "]"}], "/@", 
+        RowBox[{"ToString", "/@", 
+         RowBox[{"p", "[", 
+          RowBox[{"[", 
+           RowBox[{"All", ",", "3"}], "]"}], "]"}]}]}]}], "}"}], "]"}]}]}], 
+  ";", 
+  RowBox[{"(*", 
+   RowBox[{"date", " ", "range", " ", "as", " ", "per", " ", "pattern"}], 
+   "*)"}]}]}], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ CellChangeTimes->{{3.8892028053092437`*^9, 3.8892028880202527`*^9}, {
+  3.8892029286388097`*^9, 3.889202937149436*^9}, {3.889203129866064*^9, 
+  3.8892031324904127`*^9}, {3.8892031952115636`*^9, 3.8892032033502274`*^9}, {
+  3.8892035164122767`*^9, 3.8892035194428444`*^9}, {3.88920368653617*^9, 
+  3.889203725715051*^9}, {3.889203806042103*^9, 3.889203808432157*^9}, {
+  3.8892879757418714`*^9, 
+  3.889288036854042*^9}},ExpressionUUID->"2913ec91-5255-476f-bb7a-\
+43b28e70bfa3"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"zipfiles", ",", "csvfiles"}], "}"}], ":=", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"FileNameTake", "/@", 
+       RowBox[{"FileNames", "[", 
+        RowBox[{"\"\<*\>\"", ",", "zip"}], "]"}]}], ",", 
+      RowBox[{"FileNameTake", "/@", 
+       RowBox[{"FileNames", "[", 
+        RowBox[{"\"\<*\>\"", ",", "csv"}], "]"}]}]}], "}"}]}], ";"}], 
+  RowBox[{"(*", 
+   RowBox[{
+   "delayed", " ", "function", " ", "to", " ", "show", " ", "all", " ", "the",
+     " ", "files", " ", "in", " ", "the", " ", "respective", " ", "folder"}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+   "website", " ", "=", " ", 
+    "\"\<http://data.gdeltproject.org/events/index.html\>\""}], ";"}], 
+  RowBox[{"(*", 
+   RowBox[{"Database", " ", "website"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"totallinks", "=", 
+    RowBox[{"Import", "[", 
+     RowBox[{"website", ",", "\"\<Hyperlinks\>\""}], "]"}]}], ";"}], 
+  RowBox[{"(*", 
+   RowBox[{
+   "total", " ", "links", " ", "for", " ", "all", " ", "dates", " ", 
+    "available", " ", "in", " ", "website"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "Download", " ", "list", " ", "creation", " ", "of", " ", "the", " ", 
+    "dates", " ", "of", " ", "data", " ", "of", " ", "our", " ", "interest"}],
+    "*)"}], 
+  RowBox[{
+   RowBox[{"downloadList", "=", 
+    RowBox[{
+     RowBox[{"Flatten", "[", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"Select", "[", 
+         RowBox[{"totallinks", ",", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"StringContainsQ", "[", 
+             RowBox[{"#", ",", "i"}], "]"}], "&&", 
+            RowBox[{"StringEndsQ", "[", 
+             RowBox[{"#", ",", "\"\<.zip\>\""}], "]"}], "&&", 
+            RowBox[{"!", 
+             RowBox[{"StringContainsQ", "[", 
+              RowBox[{"#", ",", "zipfiles"}], "]"}]}]}], "&"}]}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", 
+          RowBox[{"{", "datelist", "}"}]}], "}"}]}], "]"}], "]"}], "//", 
+     "Reverse"}]}], ";"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"newzip", "=", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"URLDownload", "[", 
+       RowBox[{"#", ",", 
+        RowBox[{"FileNameJoin", "[", 
+         RowBox[{"{", 
+          RowBox[{"zip", ",", 
+           RowBox[{"FileNameTake", "[", "#", "]"}]}], "}"}], "]"}]}], "]"}], 
+      "&"}], "/@", "downloadList"}]}], ";"}], 
+  RowBox[{"(*", 
+   RowBox[{
+   "Files", " ", "downloaded", " ", "and", " ", "stored", " ", "as", " ", 
+    "zip", " ", "format"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"newcsv", "=", 
+   RowBox[{"Flatten", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"ExtractArchive", "[", 
+       RowBox[{"#", ",", "csv", ",", 
+        RowBox[{"OverwriteTarget", " ", "->", " ", "True"}]}], "]"}], "&"}], "/@",
+      "newzip"}], "]"}]}], ";", 
+  RowBox[{"(*", 
+   RowBox[{"Csv", " ", "files", " ", "extracted"}], "*)"}]}]}], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ CellChangeTimes->{{3.889117431541109*^9, 3.889117431572398*^9}, {
+   3.8891186980406175`*^9, 3.8891186984780197`*^9}, {3.8891188685812693`*^9, 
+   3.8891188977631483`*^9}, {3.8891189514537497`*^9, 3.889118955327914*^9}, 
+   3.889119019188218*^9, {3.889119053915692*^9, 3.8891190597267337`*^9}, {
+   3.8891191545350685`*^9, 3.889119218117118*^9}, {3.889119294055189*^9, 
+   3.889119345825285*^9}, {3.889119544706791*^9, 3.8891195453004417`*^9}, {
+   3.889119651093048*^9, 3.889119684696232*^9}, {3.8891197262975626`*^9, 
+   3.8891197277971296`*^9}, {3.889119825201538*^9, 3.889119825779529*^9}, 
+   3.8891200191143627`*^9, {3.8891200834129453`*^9, 3.8891201330594273`*^9}, {
+   3.889120253771313*^9, 3.889120254802394*^9}, {3.88912028788942*^9, 
+   3.8891203351605453`*^9}, {3.889120368497377*^9, 3.889120451902439*^9}, {
+   3.889120645196227*^9, 3.8891206560530014`*^9}, {3.889120712354555*^9, 
+   3.8891207376019135`*^9}, {3.889120990702958*^9, 3.8891209948738756`*^9}, 
+   3.889121055303341*^9, {3.8891212299769306`*^9, 3.889121234945922*^9}, 
+   3.8891217761913877`*^9, {3.889191616910454*^9, 3.8891916258777313`*^9}, {
+   3.8892039459351916`*^9, 3.8892039618228755`*^9}, 3.889204425838748*^9, {
+   3.8892880438998113`*^9, 
+   3.889288179528191*^9}},ExpressionUUID->"fce0c45e-6814-4786-83c1-\
+f8029025fb8c"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["MySql Database table creation ", "Text",
+ CellGroupingRules->{"GroupTogetherGrouping", 10003.},
+ CellChangeTimes->{{3.8891217386678853`*^9, 3.8891217558669434`*^9}, {
+   3.889185297664062*^9, 3.8891852996167307`*^9}, 
+   3.889185350328883*^9},ExpressionUUID->"b24d6fd1-0d96-46a0-a88d-\
+5d63df17f034"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Needs", "[", "\"\<DatabaseLink`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"connection", " ", "=", " ", 
+   RowBox[{"OpenSQLConnection", "[", "\"\<mysql\>\"", "]"}]}], ";", 
+  RowBox[{"(*", 
+   RowBox[{
+   "Connection", " ", "to", " ", "local", " ", "mysql", " ", "server"}], 
+   "*)"}]}]}], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10003.},
+ CellChangeTimes->{
+  3.889185350328883*^9, {3.8892881902448654`*^9, 
+   3.889288204164281*^9}},ExpressionUUID->"dba4650b-1306-40d4-8c20-\
+10c61290952e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"Checking", " ", "if", " ", "table", " ", "exists"}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"exist1", "=", 
+     RowBox[{
+      RowBox[{"SQLExecute", "[", 
+       RowBox[{
+       "connection", ",", 
+        "\"\<SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE \
+table_name = 'russia_ukraine')\>\""}], "]"}], "[", 
+      RowBox[{"[", 
+       RowBox[{"1", ",", "1"}], "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"exist2", "=", 
+     RowBox[{
+      RowBox[{"SQLExecute", "[", 
+       RowBox[{
+       "connection", ",", 
+        "\"\<SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE \
+table_name = 'conflict_score')\>\""}], "]"}], "[", 
+      RowBox[{"[", 
+       RowBox[{"1", ",", "1"}], "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"exist3", "=", 
+     RowBox[{
+      RowBox[{"SQLExecute", "[", 
+       RowBox[{
+       "connection", ",", 
+        "\"\<SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE \
+table_name = 'gdelt')\>\""}], "]"}], "[", 
+      RowBox[{"[", 
+       RowBox[{"1", ",", "1"}], "]"}], "]"}]}], ";"}]}]}]], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10003.},
+ CellChangeTimes->{{3.8891218910747447`*^9, 3.889121892043295*^9}, {
+   3.8891222099707437`*^9, 3.889122281128599*^9}, {3.889122980587224*^9, 
+   3.8891230168928003`*^9}, 3.8891239413644705`*^9, {3.889124286465113*^9, 
+   3.889124296557124*^9}, {3.8891243327060494`*^9, 3.88912433362766*^9}, {
+   3.889126148067873*^9, 3.889126154067007*^9}, 3.889185255233287*^9, 
+   3.889185350328883*^9, {3.8891876261723633`*^9, 3.889187647637076*^9}, {
+   3.8892882136937833`*^9, 
+   3.8892882246754737`*^9}},ExpressionUUID->"a41f1b2a-d898-4a6d-a336-\
+b435394824eb"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"table", " ", "create", " ", "if", " ", "not", " ", "exist"}], 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"exist1", "==", "0"}], ",", 
+      RowBox[{"SQLExecute", "[", 
+       RowBox[{
+       "connection", ",", 
+        "\"\<CREATE TABLE russia_ukraine (\n  DATEADDED DATE,\n  Pair TEXT,\n \
+ conflict_score INT\n);\>\""}], "]"}]}], "]"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"table", " ", "create", " ", "if", " ", "not", " ", "exist"}], 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"exist2", "==", "0"}], ",", 
+      RowBox[{"SQLExecute", "[", 
+       RowBox[{
+       "connection", ",", 
+        "\"\<CREATE TABLE conflict_score (\n  DATEADDED DATE,\n  Pair1 TEXT,\n\
+  Score1 INT,\n  Pair2 TEXT,\n  Score2 INT,\n  Pair3 TEXT,\n  Score3 INT,\n  \
+Pair4 TEXT,\n  Score4 INT,\n  Pair5 TEXT,\n  Score5 INT,\n  Pair6 TEXT,\n  \
+Score6 INT,\n  Pair7 TEXT,\n  Score7 INT,\n  Pair8 TEXT,\n  Score8 INT,\n  \
+Pair9 TEXT,\n  Score9 INT,\n  Pair10 TEXT,\n  Score10 INT,\n  Pair11 TEXT,\n  \
+Score11 INT,\n  Pair12 TEXT,\n  Score12 INT,\n  Pair13 TEXT,\n  Score13 INT,\n\
+  Pair14 TEXT,\n  Score14 INT,\n  Pair15 TEXT,\n  Score15 INT\n);\>\""}], 
+       "]"}]}], "]"}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"table", " ", "create", " ", "if", " ", "not", " ", "exist"}], 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"exist3", "==", "0"}], ",", 
+      RowBox[{"SQLExecute", "[", 
+       RowBox[{
+       "connection", ",", 
+        "\"\<CREATE TABLE gdelt (\n  GLOBALEVENTID TEXT,\n  SQLDATE TEXT,\n  \
+MonthYear TEXT,\n  Year TEXT,\n  FractionDate TEXT,\n  Actor1Code TEXT,\n  \
+Actor1Name TEXT,\n  Actor1CountryCode TEXT,\n  Actor1KnownGroupCode TEXT,\n  \
+Actor1EthnicCode TEXT,\n  Actor1Religion1Code TEXT,\n  Actor1Religion2Code \
+TEXT,\n  Actor1Type1Code TEXT,\n  Actor1Type2Code TEXT,\n  Actor1Type3Code \
+TEXT,\n  Actor2Code TEXT,\n  Actor2Name TEXT,\n  Actor2CountryCode TEXT,\n  \
+Actor2KnownGroupCode TEXT,\n  Actor2EthnicCode TEXT,\n  Actor2Religion1Code \
+TEXT,\n  Actor2Religion2Code TEXT,\n  Actor2Type1Code TEXT,\n  \
+Actor2Type2Code TEXT,\n  Actor2Type3Code TEXT,\n  IsRootEvent TEXT,\n  \
+EventCode TEXT,\n  EventBaseCode TEXT,\n  EventRootCode TEXT,\n  QuadClass \
+TEXT,\n  GoldsteinScale TEXT,\n  NumMentions TEXT,\n  NumSources TEXT,\n  \
+NumArticles TEXT,\n  AvgTone TEXT,\n  Actor1Geo_Type TEXT,\n  \
+Actor1Geo_FullName TEXT,\n  Actor1Geo_CountryCode TEXT,\n  Actor1Geo_ADM1Code \
+TEXT,\n  Actor1Geo_Lat TEXT,\n  Actor1Geo_Long TEXT,\n  Actor1Geo_FeatureID \
+TEXT,\n  Actor2Geo_Type TEXT,\n  Actor2Geo_FullName TEXT,\n  \
+Actor2Geo_CountryCode TEXT,\n  Actor2Geo_ADM1Code TEXT,\n  Actor2Geo_Lat \
+TEXT,\n  Actor2Geo_Long TEXT,\n  Actor2Geo_FeatureID TEXT,\n  ActionGeo_Type \
+TEXT,\n  ActionGeo_FullName TEXT,\n  ActionGeo_CountryCode TEXT,\n  \
+ActionGeo_ADM1Code TEXT,\n  ActionGeo_Lat TEXT,\n  ActionGeo_Long TEXT,\n  \
+ActionGeo_FeatureID TEXT,\n  DATEADDED DATE,\n  SOURCEURL TEXT\n);\n\>\""}], 
+       "]"}]}], "]"}], ";"}]}]}]], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10003.},
+ CellChangeTimes->{{3.8891237352625494`*^9, 3.8891238153451757`*^9}, 
+   3.889123856933488*^9, 3.8891239327415543`*^9, {3.8891240466870503`*^9, 
+   3.8891240528274136`*^9}, {3.889124338064156*^9, 3.889124352436576*^9}, {
+   3.8891261615808783`*^9, 3.8891261999467707`*^9}, {3.889126427669693*^9, 
+   3.8891265015604467`*^9}, 3.889126556003586*^9, 3.889185350328883*^9, {
+   3.889187316436976*^9, 3.889187387081725*^9}, {3.8891875039928265`*^9, 
+   3.889187605332605*^9}, {3.889187688596701*^9, 3.889187707672082*^9}, 
+   3.8891877508606586`*^9, 3.8891878501180406`*^9, {3.889198612074257*^9, 
+   3.8891986311333485`*^9}, {3.889198698067938*^9, 3.8891987562918935`*^9}, 
+   3.88919921100573*^9, {3.88928823343999*^9, 
+   3.889288263121374*^9}},ExpressionUUID->"8961fa0a-b63d-4787-8c1a-\
+1141d66afefb"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["MySql Database table update", "Text",
+ CellGroupingRules->{"GroupTogetherGrouping", 10004.},
+ CellChangeTimes->{{3.8891853686064496`*^9, 3.889185372433666*^9}, 
+   3.889202780779875*^9},ExpressionUUID->"c0dbedee-d170-4942-b338-\
+41f4f6a3b433"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"conflictnumber", "=", 
+    RowBox[{"Import", "[", 
+     RowBox[{"FileNameJoin", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+        "\"\<intermediate files\>\"", ",", "\"\<conflictnumber.mx\>\""}], 
+       "}"}], "]"}], "]"}]}], ";"}], 
+  RowBox[{"(*", 
+   RowBox[{
+   "Selection", " ", "of", " ", "eventcodes", " ", "based", " ", "on", " ", 
+    "goldstein", " ", "scale", " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"-", "5"}], " ", "to"}], " ", "-", "10"}], ")"}], " ", "for", 
+    " ", "global", " ", "conflict", " ", "evaluation"}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"isorule", " ", "=", " ", 
+   RowBox[{"Import", "[", 
+    RowBox[{"FileNameJoin", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+       "\"\<intermediate files\>\"", ",", "\"\<isorule.mx\>\""}], "}"}], 
+     "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"fipsrule", " ", "=", " ", 
+   RowBox[{"Import", "[", 
+    RowBox[{"FileNameJoin", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+       "\"\<intermediate files\>\"", ",", "\"\<fipsrule.mx\>\""}], "}"}], 
+     "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"conflictrules", "=", " ", 
+   RowBox[{"Import", "[", 
+    RowBox[{"FileNameJoin", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+       "\"\<intermediate files\>\"", ",", "\"\<conflictrules.mx\>\""}], "}"}],
+      "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"goldsteinscale", "=", 
+   RowBox[{"Import", "[", 
+    RowBox[{
+    "\"\<http://gdeltproject.org/data/lookups/CAMEO.goldsteinscale.txt\>\"", 
+     ",", "\"\<TSV\>\""}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"conflictheader", " ", "=", " ", 
+   RowBox[{"Import", "[", 
+    RowBox[{"FileNameJoin", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+       "\"\<intermediate files\>\"", ",", "\"\<conflictheader.mx\>\""}], 
+      "}"}], "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"russiaukraineheader", " ", "=", " ", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<DATEADDED\>\"", ",", "\"\<Pair\>\"", ",", " ", 
+     "\"\<conflict_score\>\""}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"header", " ", "=", " ", 
+   RowBox[{
+    RowBox[{"Import", "[", 
+     RowBox[{
+     "\"\<https://www.gdeltproject.org/data/lookups/CSV.header.dailyupdates.\
+txt\>\"", ",", "\"\<TSV\>\""}], "]"}], "[", 
+    RowBox[{"[", "1", "]"}], "]"}]}], ";", 
+  RowBox[{"(*", 
+   RowBox[{"column", " ", "names", " ", "export"}], "*)"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]"}]}], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10004.},
+ CellChangeTimes->{{3.8891855131440315`*^9, 3.889185521659334*^9}, {
+   3.8891859619220543`*^9, 3.889185966217876*^9}, {3.8891860504564233`*^9, 
+   3.8891860542367554`*^9}, 3.8891863670785227`*^9, {3.8891866434799767`*^9, 
+   3.8891866441066055`*^9}, 3.8891869045445952`*^9, {3.889187868364018*^9, 
+   3.8891878689107637`*^9}, 3.8891879154818344`*^9, {3.889188005698708*^9, 
+   3.8891880089322777`*^9}, 3.8891881402971106`*^9, {3.8891886945624623`*^9, 
+   3.889188695249857*^9}, {3.889188755615488*^9, 3.8891887594583373`*^9}, 
+   3.8891924468086424`*^9, {3.8891985449012065`*^9, 3.889198551665677*^9}, 
+   3.8891987608064504`*^9, {3.8892021689350553`*^9, 3.8892021716066957`*^9}, {
+   3.88920275257259*^9, 3.889202780779875*^9}, 3.8892571519775496`*^9, {
+   3.889257273696576*^9, 3.8892572797462244`*^9}, {3.889257517264414*^9, 
+   3.88925754584836*^9}, {3.889257583107729*^9, 3.889257619300112*^9}, {
+   3.8892576684216614`*^9, 3.8892576901675963`*^9}, {3.8892882726356444`*^9, 
+   3.88928833887227*^9}},ExpressionUUID->"48434d71-5333-417a-bc44-\
+118cd80fc706"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "Module", " ", "creation", " ", "for", " ", "structuring", " ", "of", " ", 
+    "data"}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"input", "[", 
+     RowBox[{"csvfile_", ",", "countrypair_"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"file", "=", "csvfile"}], ",", 
+        RowBox[{"name", "=", "countrypair"}], ",", "countries", ",", 
+        "fullnames", ",", "totalpairs", ",", "top", ",", "top15"}], "}"}], 
+      ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"countries", "=", " ", 
+        RowBox[{
+         RowBox[{"Select", "[", 
+          RowBox[{
+           RowBox[{"Import", "[", 
+            RowBox[{"file", ",", "\"\<TSV\>\""}], "]"}], ",", 
+           RowBox[{
+            RowBox[{"MemberQ", "[", 
+             RowBox[{"conflictnumber", ",", 
+              RowBox[{"#", "[", 
+               RowBox[{"[", "27", "]"}], "]"}]}], "]"}], "&"}]}], "]"}], "[", 
+         RowBox[{"[", 
+          RowBox[{"All", ",", 
+           RowBox[{"{", 
+            RowBox[{"8", ",", "18", ",", "38", ",", "45"}], "}"}]}], "]"}], 
+         "]"}]}], ";", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{
+         "Selecting", " ", "the", " ", "columns", " ", "of", " ", 
+          "actor1countrycode"}], " ", ",", "actor2countrycode", " ", ",", 
+         "actor1geocountrycode", ",", 
+         RowBox[{
+         "actor2geocountrycode", " ", "based", " ", "on", " ", "goldstein", 
+          " ", "scale"}]}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"fullnames", "=", " ", 
+        RowBox[{"AlphabeticSort", "/@", 
+         RowBox[{"Join", "[", 
+          RowBox[{
+           RowBox[{"Replace", "[", 
+            RowBox[{
+             RowBox[{"countries", "[", 
+              RowBox[{"[", 
+               RowBox[{"All", ",", 
+                RowBox[{"{", 
+                 RowBox[{"1", ",", "2"}], "}"}]}], "]"}], "]"}], ",", 
+             "isorule", ",", "Infinity"}], "]"}], ",", 
+           RowBox[{"Replace", "[", 
+            RowBox[{
+             RowBox[{"countries", "[", 
+              RowBox[{"[", 
+               RowBox[{"All", ",", 
+                RowBox[{"{", 
+                 RowBox[{"3", ",", "4"}], "}"}]}], "]"}], "]"}], ",", 
+             "fipsrule", ",", "Infinity"}], "]"}]}], "]"}]}]}], ";", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Replacing", " ", "ISO", " ", "and", " ", "FIPS", " ", "country", " ",
+          "codes", " ", "and", " ", "sorting", " ", "them", " ", 
+         "alphabetically"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"totalpairs", "=", 
+        RowBox[{"ReverseSortBy", "[", 
+         RowBox[{
+          RowBox[{"Select", "[", 
+           RowBox[{
+            RowBox[{"fullnames", "//", "Tally"}], ",", 
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{"StringLength", "[", 
+                RowBox[{
+                 RowBox[{"#", "[", 
+                  RowBox[{"[", "1", "]"}], "]"}], "[", 
+                 RowBox[{"[", "1", "]"}], "]"}], "]"}], ">", "1"}], "&&", 
+              RowBox[{
+               RowBox[{"StringLength", "[", 
+                RowBox[{
+                 RowBox[{"#", "[", 
+                  RowBox[{"[", "1", "]"}], "]"}], "[", 
+                 RowBox[{"[", "2", "]"}], "]"}], "]"}], ">", "1"}], "&&", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"#", "[", 
+                 RowBox[{"[", "1", "]"}], "]"}], "[", 
+                RowBox[{"[", "1", "]"}], "]"}], "!=", 
+               RowBox[{
+                RowBox[{"#", "[", 
+                 RowBox[{"[", "1", "]"}], "]"}], "[", 
+                RowBox[{"[", "2", "]"}], "]"}]}]}], "&"}]}], "]"}], ",", 
+          "Last"}], "]"}]}], ";", 
+       RowBox[{"(*", 
+        RowBox[{
+        "creating", " ", "total", " ", "pairs", " ", "with", " ", "conflict", 
+         " ", "score", " ", "and", " ", "country", " ", "pairs"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"top", "=", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Riffle", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"totalpairs", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "[", 
+                   RowBox[{"[", "1", "]"}], "]"}], "[", 
+                  RowBox[{"[", "1", "]"}], "]"}], ",", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"totalpairs", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "[", 
+                   RowBox[{"[", "1", "]"}], "]"}], "[", 
+                  RowBox[{"[", "2", "]"}], "]"}]}], "}"}], ",", 
+               "\"\<-||-\>\""}], "]"}], "//", "StringJoin"}], ",", 
+            RowBox[{
+             RowBox[{"totalpairs", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], "[", 
+             RowBox[{"[", "2", "]"}], "]"}]}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", 
+            RowBox[{"totalpairs", "//", "Length"}]}], "}"}]}], "]"}]}], ";", 
+       RowBox[{"(*", 
+        RowBox[{
+        "joining", " ", "names", " ", "of", " ", "2", " ", "countries", " ", 
+         "by", " ", "string", " ", "operation"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"top15", "=", 
+        RowBox[{"top", "[", 
+         RowBox[{"[", 
+          RowBox[{";;", "15"}], "]"}], "]"}]}], ";", 
+       RowBox[{"(*", 
+        RowBox[{"top", " ", "15", " ", "pairs"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"conflictscore", "=", " ", 
+        RowBox[{"Prepend", "[", 
+         RowBox[{
+          RowBox[{"top15", "//", "Flatten"}], ",", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"file", "//", "FileNameTake"}], "//", "FileBaseName"}], "//",
+            "FileBaseName"}]}], "]"}]}], ";", 
+       RowBox[{"(*", 
+        RowBox[{
+        "final", " ", "top", " ", "15", " ", "pairs", " ", "with", " ", 
+         "date"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"russiaukrainescore", "=", 
+        RowBox[{"Prepend", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Select", "[", 
+            RowBox[{"top", ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"#", "[", 
+                RowBox[{"[", "1", "]"}], "]"}], "==", "name"}], "&"}]}], 
+            "]"}], "//", "Flatten"}], ",", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"file", "//", "FileNameTake"}], "//", "FileBaseName"}], "//",
+            "FileBaseName"}]}], "]"}]}], ";"}]}], "]"}]}], 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"extracting", " ", "russia"}], "-", 
+     RowBox[{
+     "ukraine", " ", "score", " ", "for", " ", "a", " ", "seperate", " ", 
+      "table"}]}], "*)"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]"}]}]], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10004.},
+ CellChangeTimes->{{3.889196785028325*^9, 3.889196790370822*^9}, {
+   3.88919685384236*^9, 3.8891969927623377`*^9}, {3.8891970968982944`*^9, 
+   3.889197146278679*^9}, {3.889197917781207*^9, 3.889198112000499*^9}, {
+   3.8891983069781833`*^9, 3.8891983076186466`*^9}, {3.8891983379046035`*^9, 
+   3.8891983413725824`*^9}, {3.889198515081748*^9, 3.8891985338213797`*^9}, {
+   3.8891987871603837`*^9, 3.889198813827482*^9}, {3.8891988545070868`*^9, 
+   3.8891988785643654`*^9}, {3.8891989652361913`*^9, 3.889199019928196*^9}, {
+   3.8891992834605293`*^9, 3.8891992973634415`*^9}, {3.8891993312324114`*^9, 
+   3.889199335590679*^9}, {3.889199524846752*^9, 3.8891995479668407`*^9}, {
+   3.889199600144789*^9, 3.88919962724872*^9}, 3.8891996573048286`*^9, {
+   3.88920275257259*^9, 3.889202780779875*^9}, {3.8892883557758164`*^9, 
+   3.8892886211137238`*^9}},ExpressionUUID->"13f5a322-f8d4-44ca-8bbf-\
+4dd522ac465f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Table", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"input", "[", 
+       RowBox[{
+        RowBox[{"newcsv", "[", 
+         RowBox[{"[", "i", "]"}], "]"}], ",", "countrypair"}], "]"}], ",", 
+      RowBox[{"SQLInsert", "[", 
+       RowBox[{
+       "connection", ",", "\"\<conflict_score\>\"", ",", "conflictheader", 
+        ",", "conflictscore"}], "]"}], ",", 
+      RowBox[{"SQLInsert", "[", 
+       RowBox[{
+       "connection", ",", "\"\<russia_ukraine\>\"", ",", 
+        "russiaukraineheader", ",", "russiaukrainescore"}], "]"}]}], "}"}], 
+    ",", 
+    RowBox[{"{", 
+     RowBox[{"i", ",", 
+      RowBox[{"newcsv", "//", "Length"}]}], "}"}]}], "]"}], ";", 
+  RowBox[{"(*", 
+   RowBox[{
+   "Adding", " ", "data", " ", "to", " ", "both", " ", "conflict_score", " ", 
+    "and", " ", "russia_ukraine", " ", "table"}], "*)"}]}]], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10004.},
+ CellChangeTimes->{{3.88920275257259*^9, 3.889202780779875*^9}, 
+   3.8892047909464636`*^9, {3.889206980702242*^9, 3.88920698571705*^9}, {
+   3.889209330354794*^9, 3.889209333917151*^9}, {3.8892886257061357`*^9, 
+   3.8892886556364913`*^9}},ExpressionUUID->"adaa06f8-e509-4fcc-9174-\
+c61cabad0d31"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Table", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"x", "=", 
+       RowBox[{"Partition", "[", 
+        RowBox[{
+         RowBox[{"Import", "[", 
+          RowBox[{
+           RowBox[{"newcsv", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], ",", "\"\<TSV\>\""}], "]"}], ",", 
+         RowBox[{"UpTo", "[", "50000", "]"}]}], "]"}]}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"SQLInsert", "[", 
+         RowBox[{"connection", ",", "\"\<gdelt\>\"", ",", "header", ",", 
+          RowBox[{"x", "[", 
+           RowBox[{"[", "j", "]"}], "]"}]}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"j", ",", "1", ",", 
+          RowBox[{"x", "//", "Length"}]}], "}"}]}], "]"}]}], "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"i", ",", "1", ",", 
+      RowBox[{"newcsv", "//", "Length"}]}], "}"}]}], "]"}], ";", 
+  RowBox[{"(*", 
+   RowBox[{
+   "Adding", " ", "original", " ", "data", " ", "from", " ", "csv", " ", 
+    "files", " ", "into", " ", "the", " ", "gdelt", " ", "table"}], 
+   "*)"}]}]], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10004.},
+ CellChangeTimes->{{3.8892020071661386`*^9, 3.889202018789321*^9}, {
+  3.889202752588148*^9, 3.8892027807954144`*^9}, {3.889288658027135*^9, 
+  3.889288676008777*^9}},ExpressionUUID->"86a78e7c-3971-4ea9-9aff-\
+b3987e33de60"]
+}, Open  ]]
+},
+WindowSize->{1141.2, 604.8},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"13.0 for Microsoft Windows (64-bit) (December 2, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"5aedd376-d9a8-440d-9c34-2dc79b6a3f6c"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 681, 12, 31, "Text",ExpressionUUID->"eb253dce-1f4d-4993-a980-f511f22bc772",
+ CellGroupingRules->{"GroupTogetherGrouping", 10001.},
+ InitializationGroup->True],
+Cell[1264, 36, 1242, 34, 141, "Text",ExpressionUUID->"c5902bb8-7236-45e2-b28b-e8693ce83574",
+ CellGroupingRules->{"GroupTogetherGrouping", 10001.}]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[2543, 75, 239, 4, 31, "Text",ExpressionUUID->"487008c5-74e1-4791-a6dd-9694388bcb43",
+ CellGroupingRules->{"GroupTogetherGrouping", 10000.}],
+Cell[2785, 81, 2261, 48, 105, "Input",ExpressionUUID->"dc69e110-229b-4c2f-81e0-6765ea7d2017",
+ CellGroupingRules->{"GroupTogetherGrouping", 10000.}]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5083, 134, 307, 5, 35, "Text",ExpressionUUID->"739a3823-d310-4613-afce-78e6e555b1a5",
+ CellGroupingRules->{"GroupTogetherGrouping", 10001.}],
+Cell[5393, 141, 2225, 53, 143, "Input",ExpressionUUID->"74210a79-4027-41d8-8ee3-12705f291911",
+ CellGroupingRules->{"GroupTogetherGrouping", 10001.}]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7655, 199, 300, 5, 35, "Text",ExpressionUUID->"bcc2954c-bfa6-4926-b0d9-06ec4b546327",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.}],
+Cell[7958, 206, 2765, 72, 105, "Input",ExpressionUUID->"2913ec91-5255-476f-bb7a-43b28e70bfa3",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.}],
+Cell[10726, 280, 4439, 108, 219, "Input",ExpressionUUID->"fce0c45e-6814-4786-83c1-f8029025fb8c",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.}]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[15202, 393, 306, 5, 35, "Text",ExpressionUUID->"b24d6fd1-0d96-46a0-a88d-5d63df17f034",
+ CellGroupingRules->{"GroupTogetherGrouping", 10003.}],
+Cell[15511, 400, 569, 15, 48, "Input",ExpressionUUID->"dba4650b-1306-40d4-8c20-10c61290952e",
+ CellGroupingRules->{"GroupTogetherGrouping", 10003.}],
+Cell[16083, 417, 1815, 45, 86, "Input",ExpressionUUID->"a41f1b2a-d898-4a6d-a336-b435394824eb",
+ CellGroupingRules->{"GroupTogetherGrouping", 10003.}],
+Cell[17901, 464, 4142, 77, 1989, "Input",ExpressionUUID->"8961fa0a-b63d-4787-8c1a-1141d66afefb",
+ CellGroupingRules->{"GroupTogetherGrouping", 10003.}]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[22080, 546, 249, 4, 35, "Text",ExpressionUUID->"c0dbedee-d170-4942-b338-41f4f6a3b433",
+ CellGroupingRules->{"GroupTogetherGrouping", 10004.}],
+Cell[22332, 552, 3985, 95, 238, "Input",ExpressionUUID->"48434d71-5333-417a-bc44-118cd80fc706",
+ CellGroupingRules->{"GroupTogetherGrouping", 10004.}],
+Cell[26320, 649, 7944, 193, 333, "Input",ExpressionUUID->"13f5a322-f8d4-44ca-8bbf-4dd522ac465f",
+ CellGroupingRules->{"GroupTogetherGrouping", 10004.}],
+Cell[34267, 844, 1249, 31, 67, "Input",ExpressionUUID->"adaa06f8-e509-4fcc-9174-c61cabad0d31",
+ CellGroupingRules->{"GroupTogetherGrouping", 10004.}],
+Cell[35519, 877, 1365, 35, 67, "Input",ExpressionUUID->"86a78e7c-3971-4ea9-9aff-b3987e33de60",
+ CellGroupingRules->{"GroupTogetherGrouping", 10004.}]
+}, Open  ]]
+}
+]
+*)
+
